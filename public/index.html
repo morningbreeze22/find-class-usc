@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<body>
+<h1> find your USC class URL!</h1>
+
+<form id = "frm1" method="post">
+    choose your program:
+    <select name="projname">
+        <option value="csci">CSCI</option>
+        <option value="ee">ee</option>
+    </select>
+    <br>
+    the course number: <input type="text" name="num"><br> 
+    start year(>=2007): <input type="number" min="2007" max="2022" step="1" value="2007" name="startyear"><br>
+    end year(>=2007): <input type="number" min="2007" max="2022" step="1" value="2007" name="endyear"><br>
+    <input type="submit" name="submit-and-find" value="submit">
+
+</form>
+
+<div id="result"></div>
+</body>
+
+<script>
+    // like https://classes.usc.edu/term-20221/classes/csci-102
+    function getUrl(pname, c_num, year, semester){
+        return "https://classes.usc.edu/term-"+year+semester+"/classes/"+pname+"-"+c_num;
+    }
+
+
+    async function getCourseInfo(pname, c_num, year, semester){
+        let response = await fetch(getUrl(pname, c_num, year, semester));
+        let data = await response.json();
+        console.log(response);
+
+    }
+
+    let form1 = document.getElementById("frm1");
+    form1.addEventListener("submit", (ev) => {
+        //ev.preventDefault();
+        var formData = new FormData(form1);
+        let course_num = formData.get("num");
+        let s_year = formData.get("start-year");
+        let e_year = formData.get("end-year");
+        let proj_name = formData.get("proj-name");
+        if(course_num==""){
+            alert("please input a course number!");
+            return;
+        }
+        if(e_year<s_year){
+            alert("end year must be be after start year!");
+            return;
+        }
+        //let d = document.getElementById("result");
+
+        //getUrl(proj_name,course_num, s_year,e_year,1);
+        //d.innerHTML=getUrl(proj_name,course_num,s_year,1);
+
+        /*let table = document.createElement('table');
+        let thead = document.createElement('thead');
+        let tbody = document.createElement('tbody');
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        table.rules = "all";
+        table.style = " border: 3px black;"
+        // Adding the entire table to the body tag
+        document.getElementById('result').appendChild(table);
+
+        let row_1 = document.createElement('tr');
+        let heading_1 = document.createElement('th');
+        heading_1.innerHTML = "course_id";
+        let heading_2 = document.createElement('th');
+        heading_2.innerHTML = "course_name";
+        let heading_3 = document.createElement('th');
+        heading_3.innerHTML = "semester";
+        let heading_4 = document.createElement('th');
+        heading_4.innerHTML = "set up?";
+
+
+        row_1.appendChild(heading_1);
+        row_1.appendChild(heading_3);
+        row_1.appendChild(heading_4);
+        row_1.appendChild(heading_2);
+        thead.appendChild(row_1);
+
+        var semes = {
+            1 : "spring",
+            2 : "summer",
+            3 : "fall"
+        };
+
+        for(let year=s_year;year<=e_year;year++){
+            for(let semester=1;semester<=3;semester++){
+                // Creating and adding data to row of the table
+                let row = document.createElement('tr');
+                let row_data_1 = document.createElement('td');
+                row_data_1.innerHTML = proj_name+"-" + course_num;
+                let row_data_2 = document.createElement('td');
+                row_data_2.innerHTML = year + " " + semes[semester];
+                let row_data_3 = document.createElement('td');
+                row_data_3.innerHTML = "Netflix";
+
+                row.appendChild(row_data_1);
+                row.appendChild(row_data_2);
+                row.appendChild(row_data_3);
+                tbody.appendChild(row);
+
+                await getCourseInfo(proj_name,course_num,year,semester);
+
+            }
+            
+        }*/
+
+
+
+        // 自己发请求
+    })
+</script>
